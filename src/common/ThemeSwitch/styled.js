@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { ReactComponent as SunIcon } from "./sun.svg";
+import { ReactComponent as SunIcon } from "../../images/sun.svg";
 
 export const Wrapper = styled.div`
   padding: 20px;
