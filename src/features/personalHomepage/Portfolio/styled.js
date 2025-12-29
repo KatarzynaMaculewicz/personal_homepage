@@ -10,6 +10,7 @@ export const PortfolioWrapper = styled.div`
 `;
 
 export const GitHubIcon = styled(GithubIcon)`
+  color: ${({ theme }) => theme.link};
   width: 40px;
 `;
 
@@ -19,7 +20,6 @@ export const PortfolioHeader = styled.h2`
   margin-bottom: 0;
   font-weight: 900;
   font-size: 30px;
-  
 `;
 
 export const RecentProjects = styled.h3`
