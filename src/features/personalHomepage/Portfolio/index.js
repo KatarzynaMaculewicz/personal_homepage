@@ -17,33 +17,61 @@ export const Portfolio = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
+  const order = [
+    "movies-browser-group-project",
+    "To-do-list-React",
+    "Currency-calculator-react",
+    "To-do-list",
+    "Currency-calculator",
+    "types-of-coffee",
+  ];
+
   useEffect(() => {
     let isMounted = true;
     const startTime = Date.now();
 
-    fetch("https://api.github.com/users/KatarzynaMaculewicz/repos?per_page=100")
-      .then((res) => {
-        if (!res.ok) throw new Error();
-        return res.json();
-      })
-      .then((data) => {
+    const fetchMyRepos = fetch(
+      "https://api.github.com/users/katarzynamaculewicz/repos?per_page=100",
+      { cache: "no-store" }
+    ).then((res) => res.json());
+
+    const collaborationsRepos = [
+      { owner: "romvsss", repo: "movies-browser-group-project" },
+    ];
+
+    const fetchCollaborations = Promise.all(
+      collaborationsRepos.map(({ owner, repo }) =>
+        fetch(`https://api.github.com/repos/${owner}/${repo}`, {
+          cache: "no-store",
+        })
+          .then((res) => res.json())
+          .then((data) => ({
+            ...data,
+            description: data.description || "No description provided",
+          }))
+      )
+    );
+
+    Promise.all([fetchMyRepos, fetchCollaborations])
+      .then(([myReposData, collabReposData]) => {
         if (isMounted) {
-          setRepos(data);
+
+          const myReposWithDesc = myReposData.map((repo) => ({
+            ...repo,
+            description: repo.description || "",
+          }));
+
+          setRepos([...myReposWithDesc, ...collabReposData]);
         }
       })
       .catch(() => {
-        if (isMounted) {
-          setError(true);
-        }
+        if (isMounted) setError(true);
       })
       .finally(() => {
         const elapsed = Date.now() - startTime;
         const remainingTime = Math.max(LOADER_DELAY - elapsed, 0);
-
         setTimeout(() => {
-          if (isMounted) {
-            setLoading(false);
-          }
+          if (isMounted) setLoading(false);
         }, remainingTime);
       });
 
@@ -52,28 +80,8 @@ export const Portfolio = () => {
     };
   }, []);
 
-  const collaborations = [
-    {
-      id: "collab-1",
-      name: "movie-browser",
-      description: "Movie browser - group project",
-      html_url: "https://github.com/romvsss/movies-browser-group-project",
-    },
-  ];
-
-  const order = [
-    "movie-browser",
-    "To-do-list-React",
-    "Currency-calculator-react",
-    "To-do-list",
-    "Currency-calculator",
-    "types-of-coffee",
-  ];
-
-  const allProjects = [...repos, ...collaborations];
-
   const sortedProjects = order
-    .map((name) => allProjects.find((project) => project.name === name))
+    .map((name) => repos.find((project) => project.name === name))
     .filter(Boolean);
 
   return (
