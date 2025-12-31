@@ -20,6 +20,7 @@ export const PortfolioHeader = styled.h2`
   margin-bottom: 0;
   font-weight: 900;
   font-size: 30px;
+  letter-spacing: 0.05em;
 `;
 
 export const RecentProjects = styled.h3`

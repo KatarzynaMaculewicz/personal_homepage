@@ -28,6 +28,7 @@ export const Email = styled.a`
   font-weight: 900;
   font-size: 32px;
   text-decoration: none;
+  letter-spacing: 0.05em;
 
   &:hover {
     cursor: pointer;

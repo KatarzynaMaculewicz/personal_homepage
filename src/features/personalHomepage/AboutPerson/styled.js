@@ -46,7 +46,7 @@ export const ThisIs = styled.p`
 
 export const Name = styled.h1`
   color: ${({ theme }) => theme.textHeader};
-  letter-spacing: 5%;
+  letter-spacing: 0.05em;
   font-size: 38px;
   font-weight: 900;
   margin-bottom: 35px;
